@@ -4,10 +4,33 @@ const plus = document.getElementById('plus');
 const minus = document.getElementById('minus');
 const number = document.getElementById('number');
 
-const countReducer = (state = 0) => {
-  return state;
+const countReducer = (count = 0, action) => {
+  if (action.type === 'plus') {
+    return count + 1;
+  } else if (action.type === 'minus') {
+    return count - 1;
+  } else {
+    return count;
+  }
 };
+
+number.innerText = 0;
 
 const countStore = createStore(countReducer);
 
-console.log(countStore.getState());
+const countChange = () => {
+  number.innerText = countStore.getState();
+};
+
+const handlePlus = () => {
+  countStore.dispatch({type: 'plus'})
+};
+
+const handleMinus = () => {
+  countStore.dispatch({type: 'minus'})
+};
+
+plus.addEventListener('click', handlePlus);
+minus.addEventListener('click', handleMinus);
+
+countStore.subscribe(countChange);
